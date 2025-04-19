@@ -21,7 +21,8 @@ This project sets up a **3-node HashiCorp Vault cluster** using **Raft storage**
 ---
 
 ## Design
-![image](https://github.com/user-attachments/assets/c19cb662-692d-4d0d-9c7d-7548943d4192)
+![image](https://github.com/user-attachments/assets/2dc2021a-5e82-4a81-b78b-c453c26d028c)
+
 
 ## 🚀 Getting Started
 
@@ -91,7 +92,7 @@ NGINX
 Docker
 
 Lesson Learn
-   Should nit reuse existing folder and database file. It will refresh like restore the old database might need the old unsealed keys.
+   Should not reuse existing folder and database file. It will refresh like restore the old database might need the old unsealed keys.
 
 This scenairo is not using config.hcl file. it directly config under conteiners enviroment VAULT_LOCAL_CONFIG.
 
