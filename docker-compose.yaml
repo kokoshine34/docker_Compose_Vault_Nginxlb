@@ -1,0 +1,125 @@
+services:
+  vault-server1:
+    image: hashicorp/vault:latest
+    container_name: vault-server1
+    environment:
+      VAULT_LOCAL_CONFIG: |
+        {
+          "listener": [{
+            "tcp": {
+              "address": "0.0.0.0:8200",
+              "tls_disable": true
+            }
+          }],
+          "storage": {
+            "raft": {
+              "path": "/vault/data",
+              "node_id": "vault-server1"
+            }
+          },
+          "api_addr": "http://vault-server1:8200",
+          "cluster_addr": "http://vault-server1:8201",
+          "ui": true
+        }
+    volumes:
+      - vault1-data:/vault/data
+      - ./vault-server1/file:/vault/file # mapping storage volume on computer
+      - ./vault-server1/logs:/vault/logs # mapping storage volume on computer
+      - ./vault-server1/config:/vault/config # mapping storage volume on computer
+#    entrypoint: vault server -config=/vault/config/config.hcl
+    ports:
+      - "8201:8200"  # Expose for direct access/testing
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - vault-net
+
+  vault-server2:
+    image: hashicorp/vault:latest
+    container_name: vault-server2
+    environment:
+      VAULT_LOCAL_CONFIG: |
+        {
+          "listener": [{
+            "tcp": {
+              "address": "0.0.0.0:8200",
+              "tls_disable": true
+            }
+          }],
+          "storage": {
+            "raft": {
+              "path": "/vault/data",
+              "node_id": "vault-server2",
+              "retry_join": [{ "leader_api_addr": "http://vault-server1:8200" }]
+            }
+          },
+          "api_addr": "http://vault-server2:8200",
+          "cluster_addr": "http://vault-server2:8201",
+          "ui": true
+        }
+    volumes:
+      - vault2-data:/vault/data
+      - ./vault-server2/file:/vault/file # mapping storage volume on computer
+      - ./vault-server2/logs:/vault/logs # mapping storage volume on computer
+      - ./vault-server2/config:/vault/config # mapping storage volume on computer
+#    entrypoint: vault server -config=/vault/config/config.hcl
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - vault-net
+
+  vault-server3:
+    image: hashicorp/vault:latest
+    container_name: vault-server3
+    environment:
+      VAULT_LOCAL_CONFIG: |
+        {
+          "listener": [{
+            "tcp": {
+              "address": "0.0.0.0:8200",
+              "tls_disable": true
+            }
+          }],
+          "storage": {
+            "raft": {
+              "path": "/vault/data",
+              "node_id": "vault-server3",
+              "retry_join": [{ "leader_api_addr": "http://vault-server1:8200" }]
+            }
+          },
+          "api_addr": "http://vault-server3:8200",
+          "cluster_addr": "http://vault-server3:8201",
+          "ui": true
+        }
+    volumes:
+      - vault3-data:/vault/data
+      - ./vault-server3/file:/vault/file # mapping storage volume on computer
+      - ./vault-server3/logs:/vault/logs # mapping storage volume on computer
+      - ./vault-server3/config:/vault/config # mapping storage volume on computer
+#    entrypoint: vault server -config=/vault/config/config.hcl
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - vault-net
+
+  nginx:
+    image: nginx:latest
+    container_name: vault-nginx
+    ports:
+      - "8200:8200"
+    volumes:
+      - ./vault-nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - vault-server1
+      - vault-server2
+      - vault-server3
+    networks:
+      - vault-net
+
+volumes:
+  vault1-data:
+  vault2-data:
+  vault3-data:
+
+networks:
+  vault-net:
