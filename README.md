@@ -34,25 +34,7 @@ cd vault-cluster-nginx
 2. Directory Structure
 Make sure you have the following directories set up:
 
-vault-cluster-nginx/
-├── docker-compose.yml
-├── vault-nginx/
-│   └── nginx.conf
-├── vault-server1/
-│   ├── config/
-│   ├── data/
-│   ├── logs/
-│   └── file/
-├── vault-server2/
-│   ├── config/
-│   ├── data/
-│   ├── logs/
-│   └── file/
-├── vault-server3/
-│   ├── config/
-│   ├── data/
-│   ├── logs/
-│   └── file/
+![image](https://github.com/user-attachments/assets/13300972-d8c2-45d8-8f19-c8ffd094603d)
 
 --------------------------------------------------------------------------------------------------------------
 3. Run the cluster
