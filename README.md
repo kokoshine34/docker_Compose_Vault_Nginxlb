@@ -7,7 +7,7 @@ This project sets up a **3-node HashiCorp Vault cluster** using **Raft storage**
 ## 📦 What's Included
 
 - `vault-server1`, `vault-server2`, `vault-server3`: Vault nodes running in HA mode with Raft storage
-- `nginx-lb`: Load balancer routing client traffic to the Vault leader using `/v1/sys/health`
+- `vault-nginx`: Load balancer routing client traffic to the Vault leader using `/v1/sys/health`
 - Persistent volume mappings for Vault data, logs, and config
 - A custom NGINX config that detects the active Vault leader via health checks
 
@@ -20,11 +20,14 @@ This project sets up a **3-node HashiCorp Vault cluster** using **Raft storage**
 
 ---
 
+## Design
+![image](https://github.com/user-attachments/assets/c19cb662-692d-4d0d-9c7d-7548943d4192)
+
 ## 🚀 Getting Started
 
 ### 1. Clone the repo
 
-git clone https://github.com/your-username/vault-cluster-nginx.git
+git clone [https://github.com/your-username/vault-cluster-nginx.git](https://github.com/kokoshine34/docker_Compose_Vault_Nginxlb)
 cd vault-cluster-nginx
 
 -------------------------------------------------------------------------------------------------------------
@@ -107,6 +110,8 @@ Docker
 
 Lesson Learn
    Should nit reuse existing folder and database file. It will refresh like restore the old database might need the old unsealed keys.
+
+This scenairo is not using config.hcl file. it directly config under conteiners enviroment VAULT_LOCAL_CONFIG.
 
 
 
